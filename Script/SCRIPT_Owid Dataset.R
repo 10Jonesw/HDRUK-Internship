@@ -10,5 +10,12 @@
 ### CODE #######################################################################################################################
 
 # Set Working Directory
-setwd("~/Documents/R")
+setwd("~/Desktop/HDRUK-Internship-2021/Data")
 getwd()
+
+# Read in owid covid data 
+owid<- read.delim(file.choose("owid-covid-data.txt"))
+
+# Look at the number of unique countries listed in the database
+CountryNames <- unique(owid[,3])
+CountryNames
