@@ -75,7 +75,6 @@ ggplot() +
 # Save Plot
 ggsave("TotalCases.png",width = 25, limitsize = FALSE, path = Graphs.dir)
 
-
 # Plot Total Cases (LOG)
 ggplot() +
   geom_bar(aes(x = reorder(CurrentData_CountryName, -CurrentData_TotalCases), y = CurrentData_TotalCases), stat = "identity", fill = "dark red") +
