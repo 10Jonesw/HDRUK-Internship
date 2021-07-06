@@ -63,7 +63,7 @@ CurrentData_TotalCases <- CurrentData$total_cases
 # Removes scientific notion from graphs 
 options( scipen = 999 )
 
-# Plot Total Cases 
+# Plot Total Cases [GRAPH 1]
 ggplot() +
   geom_bar(aes(x = reorder(CurrentData_CountryName, -CurrentData_TotalCases), y = CurrentData_TotalCases), stat = "identity", fill = " Red") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
@@ -73,9 +73,9 @@ ggplot() +
   scale_y_continuous(breaks=seq(0, 30000000, 5000000))
 
 # Save Plot
-ggsave("TotalCases.png",width = 25, limitsize = FALSE, path = Graphs.dir)
+ggsave("Total Cases.png",width = 25, limitsize = FALSE, path = Graphs.dir)
 
-# Plot Total Cases (LOG)
+# Plot Total Cases (LOG) [GRAPH 2]
 ggplot() +
   geom_bar(aes(x = reorder(CurrentData_CountryName, -CurrentData_TotalCases), y = CurrentData_TotalCases), stat = "identity", fill = "dark red") +
   scale_y_log10() +
@@ -88,7 +88,7 @@ ggplot() +
   xlab('') + ylab('Total Number of Cases')
 
 # Save Plot
-ggsave("TotalCasesLOG.png",width = 25, limitsize = FALSE, path = Graphs.dir)
+ggsave("Total Cases (LOG).png",width = 25, limitsize = FALSE, path = Graphs.dir)
 
 
 
@@ -100,7 +100,7 @@ CurrentData_TotalDeath <- CurrentData$total_deaths
 # Removes scientific notion from graphs 
 options( scipen = 999 )
 
-# Plot Total Deaths 
+# Plot Total Deaths [GRAPH 2]
 ggplot() +
   geom_bar(aes(x = reorder(CurrentData_CountryName, -CurrentData_TotalDeath), y = CurrentData_TotalDeath), stat = "identity", fill = " blue") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
@@ -110,9 +110,9 @@ ggplot() +
   scale_y_continuous(breaks=seq(0, 600000, 50000))
 
 # Save Plot
-ggsave("TotalDeaths.png",width = 25, limitsize = FALSE, path = Graphs.dir)
+ggsave("Total Deaths.png",width = 25, limitsize = FALSE, path = Graphs.dir)
 
-# Plot Total Deaths (LOG)
+# Plot Total Deaths (LOG) [GRAPH 4]
 ggplot() +
   geom_bar(aes(x = reorder(CurrentData_CountryName, -CurrentData_TotalDeath), y = CurrentData_TotalDeath), stat = "identity", fill = "dark blue") +
   scale_y_log10() +
@@ -125,7 +125,7 @@ ggplot() +
   xlab('') + ylab('Total Number of Deaths')
 
 # Save Plot
-ggsave("TotalDeathsLOG.png",width = 25, limitsize = FALSE, path = Graphs.dir)
+ggsave("Tota lDeaths (LOG).png",width = 25, limitsize = FALSE, path = Graphs.dir)
 
 
 
@@ -138,7 +138,7 @@ Continent <- unique(CurrentData[,2])
 # Subset dataset for Europe 
 Europe <- subset(CurrentData,CurrentData$continent=="Europe" )  
 
-# Genrate scatter graph for COVID deaths and cases 
+# Generate scatter graph for COVID deaths and cases [GRAPH 5]
 ggplot(Europe, aes(total_deaths_per_million, total_cases_per_million, color = human_development_index)) +
   geom_point() +
   geom_text(aes(label=location), size=3, hjust = 0.5, vjust = 1.5) +
@@ -149,9 +149,34 @@ ggplot(Europe, aes(total_deaths_per_million, total_cases_per_million, color = hu
   scale_x_continuous(breaks=seq(0, 4000, 500)) +
   ggtitle("Total Number of COVID deaths and cases in Europe (30-06-2021)") +
   theme(plot.title = element_text(hjust = 0.5)) +
-  labs(colour = "Human Devlopment Index") +
+  labs(colour = "Human Devlopment Index")
 
 # Save Plot
 ggsave("Europe Cases and Deaths.png",width = 20, limitsize = FALSE, path = Graphs.dir)
 
+# Calculate the % of the population vaccinated 
+Europe["Percentage_Vaccinated"] <- Europe$people_vaccinated / Europe$population * 100
+
+# Find the number of countries missing % vaccination data
+sum(is.na(Europe$Percentage_Vaccinated))
+
+# Create a dataset of the 30 countries with missing % vaccination data 
+na_vaccination <- which(!complete.cases(Europe$Percentage_Vaccinated))
+
+# Create a dataset with the remaining countries with present vaccination data 
+Europe_vaccination_data <- Europe[-na_vaccination,]
+
+# Create Dot plot for vaccination data [GRAPH 6]
+ggplot(Europe_vaccination_data, aes(x = reorder(location, Percentage_Vaccinated), y = Percentage_Vaccinated), na.rm = TRUE) +
+  geom_point(col="tomato2", size=3) +
+  coord_flip() +
+  theme_classic() +
+  theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line( size=0.3, color="grey", linetype = 'dashed' )) +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10), expand = c(0, 0)) +
+  ylab('Percentage (%)') + xlab('Country') +
+  ggtitle("Percentage of the population vaccinated in Europe (30-06-2021)") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+# Save Plot
+ggsave("Percentage of the population vaccination.png", width = 20, limitsize = FALSE, path = Graphs.dir)
   
