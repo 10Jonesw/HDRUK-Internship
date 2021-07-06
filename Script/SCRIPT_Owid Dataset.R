@@ -34,7 +34,7 @@ CountryNames <- unique(owid[,3])
 CountryNames
 
 # Select rows corresponding to 30-06-2021 for each country 
-CurrentData <- subset(owid,owid$date=="2021-06-30" )                              ##Note2Self: Only 209 out of 230 countries present 
+CurrentData <- subset(owid,owid$date=="2021-06-30" )                              ##Note2Self: Only 209 out of 230 countries present - Could repeat this code for the 2021-06-29 to include UK vaccination data
 
 # Remove data relating to grouped OWI_ data
 CurrentData<-CurrentData[!(CurrentData$iso_code=="OWID_AFR" | 
@@ -92,7 +92,6 @@ ggsave("Total Cases (LOG).png",width = 25, limitsize = FALSE, path = Graphs.dir)
 
 
 
-
 ### TOTAL DEATHS ###
 CurrentData_CountryName <- CurrentData$location
 CurrentData_TotalDeath <- CurrentData$total_deaths
@@ -100,7 +99,7 @@ CurrentData_TotalDeath <- CurrentData$total_deaths
 # Removes scientific notion from graphs 
 options( scipen = 999 )
 
-# Plot Total Deaths [GRAPH 2]
+# Plot Total Deaths [GRAPH 3]
 ggplot() +
   geom_bar(aes(x = reorder(CurrentData_CountryName, -CurrentData_TotalDeath), y = CurrentData_TotalDeath), stat = "identity", fill = " blue") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
@@ -153,6 +152,9 @@ ggplot(Europe, aes(total_deaths_per_million, total_cases_per_million, color = hu
 
 # Save Plot
 ggsave("Europe Cases and Deaths.png",width = 20, limitsize = FALSE, path = Graphs.dir)
+
+
+### PERCENTAGE VACCINATED ###
 
 # Calculate the % of the population vaccinated 
 Europe["Percentage_Vaccinated"] <- Europe$people_vaccinated / Europe$population * 100
