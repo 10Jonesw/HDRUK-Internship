@@ -65,5 +65,5 @@ ggplot(Europe, aes(total_deaths_per_million, total_cases_per_million, color = hu
   labs(colour = "Human Devlopment Index")
 
 # Save Plot
-ggsave("Europe Cases and Deaths.png",width = 20, limitsize = FALSE, path = Graphs.dir)
+ggsave("SCATTER GRAPH: Europe Cases and Deaths.png",width = 20, limitsize = FALSE, path = Graphs.dir)
 

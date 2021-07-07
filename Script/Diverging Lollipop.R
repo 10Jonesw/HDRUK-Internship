@@ -1,10 +1,11 @@
 ### AUTHORS ####################################################################################################################
 # Name             Date
-# Wendy Jones      06-07-2021
+# Wendy Jones      07-07-2021
 
 ### DESCRIPTION ################################################################################################################
 # Exploring the owid COVID dataset 
-# Created a dot plot  to compare the percentage of the population vaccinated in Europe 
+# Created a Diverging  lollipop chart to compare cases per million in Europe
+# Learnt how to normalise data 
 
 ### LIBRARIES ##################################################################################################################
 
@@ -24,13 +25,8 @@ Graphs.dir <- "~/Desktop/HDRUK-Internship-2021/Data/Graphs"
 setwd("~/Desktop/HDRUK-Internship-2021/Data")
 getwd()
 
-### PERCENTAGE VACCINATED ###
-
 # Read in owid covid data 
 owid<- read.delim("owid-covid-data.txt")
-
-# Find details about the dataset
-describe (owid)
 
 # Select rows corresponding to 30-06-2021 for each country 
 CurrentData <- subset(owid,owid$date=="2021-06-30" )                              ##Note2Self: Only 209 out of 230 countries present - Could repeat this code for the 2021-06-29 to include UK vaccination data
@@ -45,34 +41,37 @@ CurrentData<-CurrentData[!(CurrentData$iso_code=="OWID_AFR" |
                              CurrentData$iso_code=="OWID_SAM"|
                              CurrentData$iso_code=="OWID_WRL"),]                                           ##Note2Self: Only 201 out of 230 countries present 
 
-# Look at how many continents there are 
-Continent <- unique(CurrentData[,2])
-
 # Subset dataset for Europe 
-Europe <- subset(CurrentData,CurrentData$continent=="Europe" ) 
+CurrentData <- subset(CurrentData,CurrentData$continent=="Europe" ) 
 
-# Calculate the % of the population vaccinated 
-Europe["Percentage_Vaccinated"] <- Europe$people_vaccinated / Europe$population * 100
+# Create a dataset of the countries with missing data
+na_cases <- which(!complete.cases(CurrentData$total_cases_per_million))
 
-# Find the number of countries missing % vaccination data
-sum(is.na(Europe$Percentage_Vaccinated))
+# Create a dataset with the remaining countries with present cases data 
+CurrentData <- CurrentData[-na_cases,]
 
-# Create a dataset of the 30 countries with missing % vaccination data 
-na_vaccination <- which(!complete.cases(Europe$Percentage_Vaccinated))
+# Normalise total cases per million data
+CurrentData["Normalised_cases"]<- round((CurrentData$total_cases_per_million - mean(CurrentData$total_cases_per_million))/sd(CurrentData$total_cases_per_million), 2)
 
-# Create a dataset with the remaining countries with present vaccination data 
-Europe_vaccination_data <- Europe[-na_vaccination,]
+# Create new column to sort countries into death per million above and below the average
+CurrentData["Cases_type"] <- ifelse(CurrentData$Normalised_cases < 0, "below", "above") 
 
-# Create Dot plot for vaccination data [GRAPH 6]
-ggplot(Europe_vaccination_data, aes(x = reorder(location, Percentage_Vaccinated), y = Percentage_Vaccinated), na.rm = TRUE) +
-  geom_point(col="tomato2", size=3) +
+# Sort data in order of high to low
+CurrentData <- CurrentData[order(CurrentData$Normalised_cases), ]
+
+# Convert to factor to keep the sorted order
+CurrentData$location<- factor(CurrentData$location, levels = CurrentData$location)
+
+ggplot(CurrentData, aes(x=location, y=Normalised_cases, label=Normalised_cases)) + 
+  geom_segment(aes(y = 0, x = location,  yend = Normalised_cases, xend = location), colour = "Black")+
+  geom_point(stat='identity', aes(col=Cases_type), size=5)+
+  scale_colour_manual(name="Cases per Million", labels = c("Above Average", "Below Average"), values = c("above"="#f8766d", "below"="#00ba38")) +
   coord_flip() +
-  theme_classic() +
-  theme(panel.grid.major.x = element_blank(), panel.grid.major.y = element_line( size=0.3, color="grey", linetype = 'dashed' )) +
-  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10), expand = c(0, 0)) +
-  ylab('Percentage (%)') + xlab('Country') +
-  ggtitle("Percentage of the population vaccinated in Europe (30-06-2021)") +
-  theme(plot.title = element_text(hjust = 0.5))
+  ylab('Normalised Total Cases per Million') + xlab('Country') +
+  ggtitle("Cases per million in Europe (30-06-2021)") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ylim(-3, 3) +
+  geom_text(color="white", size=2)
 
 # Save Plot
-ggsave("DOT PLOT: Percentage of the population vaccination.png", width = 20, limitsize = FALSE, path = Graphs.dir)
+ggsave("DIVERGING LOLLIPOP: Cases per million.png", width = 20, limitsize = FALSE, path = Graphs.dir)  
