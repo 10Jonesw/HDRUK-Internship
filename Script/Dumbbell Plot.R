@@ -1,9 +1,10 @@
 ### AUTHORS ####################################################################################################################
 # Name             Date
-# Wendy Jones      01-07-2021
+# Wendy Jones      07-07-2021
 
 ### DESCRIPTION ################################################################################################################
 # Exploring the owid COVID dataset 
+# Created a dumbbell plot to compare the percentage of the population vaccinated between May and June
 
 ### LIBRARIES ##################################################################################################################
 
@@ -73,5 +74,5 @@ May_June_Data %>%
   theme(plot.title = element_text(hjust = 0.5))
 
 # Save Plot
-ggsave("DUMBELL: Population vaccinated between May and June.png", width = 20, height = 10, limitsize = FALSE, path = Graphs.dir)                     
+ggsave("DUMBBELL: Population vaccinated between May and June.png", width = 20, height = 10, limitsize = FALSE, path = Graphs.dir)                     
   
