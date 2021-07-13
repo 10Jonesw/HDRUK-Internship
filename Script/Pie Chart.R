@@ -53,7 +53,7 @@ ggplot(Continent_data, aes(x = "", y=-Cases, fill = reorder(location, -Cases))) 
   theme(legend.text = element_text(size = 10), legend.title = element_text(size = 13), plot.background = element_rect("white"))
 
 # Save Plot
-ggsave("PIE CHART: Top continents.png", width = 20, limitsize = FALSE, path = Graphs.dir)    
+ggsave("PIE CHART Top continents.png", width = 20, limitsize = FALSE, path = Graphs.dir)    
 
 #################### Europe data 
 
@@ -99,4 +99,4 @@ ggplot(Europe, aes(x = "", y=-Europe_Cases, fill = reorder(location, -Europe_Cas
   theme(legend.text = element_text(size = 10), legend.title = element_text(size = 13), plot.background = element_rect("white"))
 
 # Save Plot
-ggsave("PIE CHART: Top 10 Europe countries.png", width = 20, limitsize = FALSE, path = Graphs.dir)  
+ggsave("PIE CHART Top 10 Europe countries.png", width = 20, limitsize = FALSE, path = Graphs.dir)  

@@ -72,7 +72,7 @@ ggplot(CurrentData, aes(x=location, y=Normalised_Deaths, label=Normalised_Deaths
   theme(plot.title = element_text(hjust = 0.5))
 
 # Save Plot
-ggsave("DIVERGING BAR: Deaths per million.png", width = 20, limitsize = FALSE, path = Graphs.dir)     
+ggsave("DIVERGING BAR Deaths per million.png", width = 20, limitsize = FALSE, path = Graphs.dir)     
 
 
 

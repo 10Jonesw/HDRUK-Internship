@@ -46,6 +46,8 @@ ggplot(UK, aes(x=date, y = new_cases_smoothed, group = 1)) +
   ggtitle("Daily confirmed COVID cases by date reported in the UK") +
   theme(plot.title = element_text(hjust = 0.5))
 
+# Save Plot
+ggsave("TIME SERIES PLOT total cases UK.png",width = 25, limitsize = FALSE, path = Graphs.dir)
 
 ###### Plot multiple time series on 1 graph 
 
@@ -63,4 +65,4 @@ ggplot(data_long, aes(x=date, y = value, col = variable)) +
   scale_y_continuous(label=comma)
 
 # Save Plot
-ggsave("TIME SERIES PLOT: New cases UK.png",width = 25, limitsize = FALSE, path = Graphs.dir)
+ggsave("TIME SERIES PLOT New cases UK.png",width = 25, limitsize = FALSE, path = Graphs.dir)

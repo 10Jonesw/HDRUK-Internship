@@ -74,5 +74,5 @@ May_June_Data %>%
   theme(plot.title = element_text(hjust = 0.5))
 
 # Save Plot
-ggsave("DUMBBELL: Population vaccinated between May and June.png", width = 20, height = 10, limitsize = FALSE, path = Graphs.dir)                     
+ggsave("DUMBBELL Population vaccinated between May and June.png", width = 20, height = 10, limitsize = FALSE, path = Graphs.dir)                     
   

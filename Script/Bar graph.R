@@ -126,4 +126,4 @@ ggplot() +
   xlab('') + ylab('Total Number of Deaths')
 
 # Save Plot
-ggsave("BAR CHART: Total Deaths (log).png",width = 25, limitsize = FALSE, path = Graphs.dir)
+ggsave("BAR CHART Total Deaths (log).png",width = 25, limitsize = FALSE, path = Graphs.dir)

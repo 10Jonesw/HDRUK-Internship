@@ -74,4 +74,4 @@ ggplot(CurrentData, aes(x=location, y=Normalised_cases, label=Normalised_cases))
   geom_text(color="white", size=2)
 
 # Save Plot
-ggsave("DIVERGING LOLLIPOP: Cases per million.png", width = 20, limitsize = FALSE, path = Graphs.dir)  
+ggsave("DIVERGING LOLLIPOP Cases per million.png", width = 20, limitsize = FALSE, path = Graphs.dir)  

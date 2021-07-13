@@ -75,4 +75,4 @@ ggplot(Europe_vaccination_data, aes(x = reorder(location, Percentage_Vaccinated)
   theme(plot.title = element_text(hjust = 0.5))
 
 # Save Plot
-ggsave("DOT PLOT: Percentage of the population vaccination.png", width = 20, limitsize = FALSE, path = Graphs.dir)
+ggsave("DOT PLOT Percentage of the population vaccination.png", width = 20, limitsize = FALSE, path = Graphs.dir)
