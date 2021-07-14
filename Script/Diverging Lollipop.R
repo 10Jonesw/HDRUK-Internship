@@ -21,6 +21,9 @@ Graphs.dir <- "~/Desktop/HDRUK-Internship-2021/Data/Graphs"
 
 ### CODE #######################################################################################################################
 
+
+# Steven: I would merge this with Deiverging Bars.R. Almost all the code is the same.
+
 # Set Working Directory
 setwd("~/Desktop/HDRUK-Internship-2021/Data")
 getwd()

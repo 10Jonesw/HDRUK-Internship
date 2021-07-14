@@ -46,7 +46,13 @@ CurrentData<-CurrentData[!(CurrentData$iso_code=="OWID_AFR" |
                              CurrentData$iso_code=="OWID_NAM"|
                              CurrentData$iso_code=="OWID_OCE"|
                              CurrentData$iso_code=="OWID_SAM"|
-                             CurrentData$iso_code=="OWID_WRL"),]                                           ##Note2Self: Only 201 out of 230 countries present 
+                             CurrentData$iso_code=="OWID_WRL"),] ##Note2Self: Only 201 out of 230 countries present 
+
+# Steven's suggestions: filter by continent
+# This is quicker and also cuts down on the number of countries in the graph, so you can see everything
+#CurrentData <- filter(CurrentData, continent == 'Europe')
+
+
 
 # Save the dataset for 30-06-2021
 write.table(
@@ -56,6 +62,10 @@ write.table(
   col.name = TRUE,
   sep = "\t"
 );
+# Steven's suggestion: csv is a more standard format for data rather than txt.
+#write.csv(CurrentData, paste0(SubsetDatasets.dir, "CurrentData.txt"))
+
+
 
 ### TOTAL CASES ###
 
