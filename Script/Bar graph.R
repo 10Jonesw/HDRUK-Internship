@@ -75,7 +75,7 @@ ggplot() +
   scale_y_continuous(breaks=seq(0, 30000000, 5000000))
 
 # Save Plot
-ggsave("BAR CHART: Total Cases.png",width = 25, limitsize = FALSE, path = Graphs.dir)
+ggsave("BAR CHART Total Cases.png",width = 25, limitsize = FALSE, path = Graphs.dir)
 
 # Plot Total Cases (LOG) [GRAPH 2]
 ggplot() +
@@ -90,7 +90,7 @@ ggplot() +
   xlab('') + ylab('Total Number of Cases')
 
 # Save Plot
-ggsave("BAR CHART: Total Cases (log).png",width = 25, limitsize = FALSE, path = Graphs.dir)
+ggsave("BAR CHART Total Cases (log).png",width = 25, limitsize = FALSE, path = Graphs.dir)
 
 
 
@@ -111,7 +111,7 @@ ggplot() +
   scale_y_continuous(breaks=seq(0, 600000, 50000))
 
 # Save Plot
-ggsave("BAR CHART: Total Deaths.png",width = 25, limitsize = FALSE, path = Graphs.dir)
+ggsave("BAR CHART Total Deaths.png",width = 25, limitsize = FALSE, path = Graphs.dir)
 
 # Plot Total Deaths (LOG) [GRAPH 4]
 ggplot() +
