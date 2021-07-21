@@ -48,10 +48,18 @@ May_June_Data <- filter(vaccination_data, date=="2021-06-30" | date=="2021-05-31
 # Select for countries that have May and June data                                        ##Note2Self: This is not an efficient method 
 May_June_Data <- May_June_Data %>% slice(2,3,8:15, 17:22, 26:27, 29:34, 36:37, 39:40, 44:45, 48:51, 60:63, 65:66, 69:72, 75:78, 81:82, 85:88, 90:95, 97:100, 103:106, 109:114, 117:118, 122:123, 126:127, 129:132, 139:140, 143:144, 147:148, 152:155,157:158, 166:167, 169:174, 177:178, 185:186, 188:189,194:201)
 
+# Steven's suggestion
+#May_June_Data <- group_by(May_June_Data, location) %>% filter( n()== 2   )
+
+
+
+
 # Create new variable that assigns group corresponding to each country 
 May_June_Data <- May_June_Data %>%
   mutate(paired = rep(1:(n()/2),each=2),
          date=factor(date))
+# Steven: This is unnecessary. Just use country as the group variable
+# In the code below, put group = country
 
 # Plot dumbbell chart
 May_June_Data %>% 

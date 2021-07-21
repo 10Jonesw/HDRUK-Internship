@@ -30,6 +30,10 @@ getwd()
 # Read in owid covid data 
 owid<- read.delim("owid-covid-data.txt")
 
+# Steven's suggestion for reading data directly from internet.
+#owid <- read_csv('https://covid.ourworldindata.org/data/owid-covid-data.csv')
+
+
 # Select rows corresponding to UK
 UK <- filter(owid , location=="United Kingdom")
 

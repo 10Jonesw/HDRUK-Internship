@@ -39,6 +39,9 @@ Continent_data["Cases"] <- Continent_data$total_cases / 182202370
 # Remove the world data 
 Continent_data <- Continent_data %>% slice(1:6)
 
+# Steven: Don't include the world data in the first place, and use this to calculate %
+#Continent_data["bob"] <- Continent_data$total_cases / sum(Continent_data$total_cases)
+
 # Draw a pie chart 
 ggplot(Continent_data, aes(x = "", y=-Cases, fill = reorder(location, -Cases))) + 
   geom_bar(width = 1, stat = "identity", colour = "black") +
@@ -63,6 +66,7 @@ getwd()
 
 # Read in owid covid data 
 owid<- read.delim("owid-covid-data.txt")
+# You don't need to do this again. Data is alreayd there
 
 # Select rows corresponding to 30-06-2021 for each country 
 CurrentData <- subset(owid,owid$date=="2021-06-30" )  

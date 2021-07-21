@@ -42,6 +42,7 @@ UK$lockdown <- c(if_else(UK$date < "2020-03-26", 1, 2))
 class(UK$date)
 UK$date <- as.Date(UK$date)
 class(UK$date)
+# Maybe put this before line 39. I had to run this first before line 39 worked.
 
 # Plot the graph             
 ggplot(UK, aes(x=date, y=new_cases, color = as.factor(lockdown))) +
