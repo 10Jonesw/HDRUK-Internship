@@ -11,6 +11,7 @@
 library(tidyverse)
 library(ggplot2)
 library(dplyr)
+library(lubridate)
 
 ### SUBSET DIRECTORIES #########################################################################################################
 
@@ -28,16 +29,32 @@ getwd()
 # Read in owid covid data 
 owid<- read.delim("owid-covid-data.txt")
 
+# Steven's suggestion for reading data directly from internet.
+owid <- read_csv('https://covid.ourworldindata.org/data/owid-covid-data.csv')
+
 # Select rows corresponding to UK
 UK <- filter(owid , location=="United Kingdom"& date>="2020-01-30" & date <= "2020-07-30")
 
 # Label each date to a corresponding week 
 UK$Week <-data.frame(Week = rep(c(1:26), each = 7))
 
+# Steven: My suggestion for getting the week from a date
+# This one gives weeks since start of year, which might be easier to work with in some ways
+#UK <- mutate(UK, Week = week(date))
+# This gives weeks since 30th January 2020
+#UK <- mutate(UK, Week = as.numeric(ceiling(difftime(date, "2020-1-30", units = "weeks") ) ))
+
+# Stevne: My suggestion for getting mean weekly cases
+#UK <- group_by(UK, Week) %>% mutate(new_cases_weekly_mean = mean(new_cases, na.rm = TRUE))
+
+# Steven: My suggestion for getting only those entries at the start of the week
+#UK<- group_by(UK, Week) %>% filter(date == min(date))
+
+
 # Find the weekly average of cases  
 UK <- UK %>%                                       
   group_by(Week) %>%                         
-  summarise_at(vars(new_cases), list(AverageCases = mean))   
+  summarise_at(vars(new_cases), list(AverageCases = mean)) 
 
 # Create new variable that groups pre-lockdown and post-lockdown 
 UK$lockdown <- c(if_else(UK$Week < 8, 0, 1))
@@ -54,7 +71,8 @@ UK <- UK %>% mutate(Lockdownweek = UK$Week-8, change=ifelse(Week>=8, 1, 0))
 #Create a new variable named 'weekpostchange' to define the weeks before and after lockdonwn                 
 UK$weekpostchange <-UK$Lockdownweek * UK$change
 
-# Convert the data column from "data.frame' to 'numerical'  variable type 
+# Convert the data column from "data.frame' to 'numerical'  variable type
+# Steven: This isn't necessary - it's already numeric
 class(UK$weekpostchange)
 UK$weekpostchange <-as.numeric(unlist(UK$weekpostchange))
 class(UK$weekpostchange)
@@ -66,6 +84,7 @@ UKdates <- UKdates %>% select(4)
 UK <- cbind(UK, UKdates)
 
 # Convert the data column from "character' to 'Date'  variable type 
+# Steven: This isn't necessary, it's already of type Date
 class(UK$date)
 UK$date <- as.Date(UK$date)
 class(UK$date)
@@ -74,6 +93,10 @@ class(UK$date)
 model0 <- glm(AverageCases ~ Week + change + weekpostchange, family="poisson", data=UK)
 summary(model0) 
 
+# Steven: Here's how to add squared terms:
+model0 <- glm(AverageCases ~ Week + I(Week^2) + change + weekpostchange + I(weekpostchange^2), family="poisson", data=UK)
+summary(model0)
+
 #Get RRs and 95%CIs
 exp(coef(model0))
 exp(confint(model0))
@@ -81,8 +104,10 @@ exp(confint(model0))
 # Present the predictors of the model and show how the model fits the data
 UK <- UK %>% mutate(prediction_model2=0)
 UK$prediction_model2=predict(model0,type="response")
+# Steven: Do this in one line
+UK <- UK %>% mutate(prediction_model2 = predict(model0,type="response"))
 
-# Plot the interrupted time series 
+# Plot the interrupted time series
 ggplot(UK, aes(x=date)) +
   geom_line(aes(y=prediction_model2)) +
   scale_y_log10() +
@@ -99,4 +124,7 @@ ggplot(UK, aes(x=date)) +
 
 # Save Plot
 ggsave("INTERRUPTED TIME SERIES PLOT_Cases_8 weeks (Lockdown 1).png",width = 15, limitsize = FALSE, path = Interrupred_Time_Series_Graphs.dir)
+
+
+
 
