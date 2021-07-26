@@ -32,6 +32,10 @@ getwd()
 # Read in owid covid data 
 owid<- read.delim("owid-covid-data.txt")
 
+
+# Steven:
+owid$date <- as.Date(owid$date)
+
 # Select rows corresponding to UK
 UK <- filter(owid , location=="United Kingdom" & date>="2020-02-26" & date <= "2020-04-26")
 
@@ -71,6 +75,8 @@ getwd()
 
 # Read in owid covid data 
 owid<- read.delim("owid-covid-data.txt")
+# Steven: No need to set the working directory and read the data in again.
+
 
 # Select rows corresponding to UK
 UK <- filter(owid , location=="United Kingdom" & date>="2020-01-26" & date <= "2020-05-26")
